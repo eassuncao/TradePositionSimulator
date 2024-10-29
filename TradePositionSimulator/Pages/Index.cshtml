@@ -1,0 +1,264 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Trade Position Simulator";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">Trade Position Simulator</h1>
+
+    <form method="post" class="needs-validation" novalidate>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Account Settings</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label asp-for="Input.InitialBalance" class="form-label">Initial Balance</label>
+                            <input type="number" class="form-control" asp-for="Input.InitialBalance" step="1" required
+                                   data-bs-toggle="tooltip" title="Your starting account balance">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Price Settings</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label asp-for="Input.InitialPrice" class="form-label">Initial Price</label>
+                            <input type="number" class="form-control" asp-for="Input.InitialPrice" step="0.01" required
+                                   data-bs-toggle="tooltip" title="The price of the asset at the first purchase">
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Input.FinalPrice" class="form-label">Final Price</label>
+                            <input type="number" class="form-control" asp-for="Input.FinalPrice" step="0.01" required
+                                   data-bs-toggle="tooltip" title="The price at which to sell everything. This takes place at the end of each simulation">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Target Settings</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label asp-for="Input.FinalBalance" class="form-label">Target Balance</label>
+                            <input type="number" class="form-control" asp-for="Input.FinalBalance" step="1" required
+                                   data-bs-toggle="tooltip" title="The minimum amount of money you want to have at the end">
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Input.HighestLiquidationPrice" class="form-label">Max Liquidation Price</label>
+                            <input type="number" class="form-control" asp-for="Input.HighestLiquidationPrice" step="0.01" required
+                                   data-bs-toggle="tooltip" title="The highest price at which you would be liquidated. The higher, the riskier">
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Input.MinimumIterations" class="form-label">Minimum Iterations</label>
+                            <input type="number" class="form-control" asp-for="Input.MinimumIterations" required
+                                   data-bs-toggle="tooltip" title="Minimum number of times to modify your position. That means buying more, selling some, or both">
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Input.MaximumIterations" class="form-label">Maximum Iterations</label>
+                            <input type="number" class="form-control" asp-for="Input.MaximumIterations" required
+                                   data-bs-toggle="tooltip" title="Maximum number of times to modify to your position. That means buying more, selling some, or both">
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Input.LowestActualPurchasePrice" class="form-label">Lowest Purchase Price</label>
+                            <input type="number" class="form-control" asp-for="Input.LowestActualPurchasePrice" step="0.01" required
+                                   data-bs-toggle="tooltip" title="The lowest price the asset will actually reach">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Simulation Settings</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="range-group mb-3">
+                            <label class="form-label">Initial Buy Percentage Range</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" asp-for="Input.InitialBuyStart" placeholder="Start" step="0.1" required
+                                       data-bs-toggle="tooltip" title="Start value">
+                                <input type="number" class="form-control" asp-for="Input.InitialBuyEnd" placeholder="End" step="0.1" required
+                                       data-bs-toggle="tooltip" title="End value">
+                                <input type="number" class="form-control" asp-for="Input.InitialBuyStep" placeholder="Step" step="0.1" required
+                                       data-bs-toggle="tooltip" title="The amount added each time">
+                            </div>
+                            <small class="form-text text-muted">How much of the asset to buy at your initial purchase. E.g., if you have $1000, and the setting is at 0.5, you would initially buy $500 worth of the asset. Note that the cash you would actually spend is $500 divided by the leverage, e.g., you would spend $250 to buy $500 worth of the asset on 2x leverage.</small>
+                        </div>
+
+                        <div class="range-group mb-3">
+                            <label class="form-label">Leverage Range</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" asp-for="Input.LeverageStart" placeholder="Start" step="0.1" required
+                                       data-bs-toggle="tooltip" title="Start value">
+                                <input type="number" class="form-control" asp-for="Input.LeverageEnd" placeholder="End" step="0.1" required
+                                       data-bs-toggle="tooltip" title="End value">
+                                <input type="number" class="form-control" asp-for="Input.LeverageStep" placeholder="Step" step="0.1" required
+                                       data-bs-toggle="tooltip" title="The amount added each time">
+                            </div>
+                            <small class="form-text text-muted">Leverage used</small>
+                        </div>
+
+                        <div class="range-group mb-3">
+                            <label class="form-label">Buy Percentage Range</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" asp-for="Input.BuyPercentageStart" placeholder="Start" step="0.1" required
+                                       data-bs-toggle="tooltip" title="Start value">
+                                <input type="number" class="form-control" asp-for="Input.BuyPercentageEnd" placeholder="End" step="0.1" required
+                                       data-bs-toggle="tooltip" title="End value">
+                                <input type="number" class="form-control" asp-for="Input.BuyPercentageStep" placeholder="Step" step="0.1" required
+                                       data-bs-toggle="tooltip" title="The amount added each time">
+                            </div>
+                            <small class="form-text text-muted">Percentage to buy each time you modify your position. E.g., if you had 1000 units of an asset and the setting is at 0.1, you would buy another 100 units.</small>
+                        </div>
+
+                        <div class="range-group mb-3">
+                            <label class="form-label">Sell Percentage Range</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" asp-for="Input.SellPercentageStart" placeholder="Start" step="0.1" required
+                                       data-bs-toggle="tooltip" title="Start value">
+                                <input type="number" class="form-control" asp-for="Input.SellPercentageEnd" placeholder="End" step="0.1" required
+                                       data-bs-toggle="tooltip" title="End value">
+                                <input type="number" class="form-control" asp-for="Input.SellPercentageStep" placeholder="Step" step="0.1" required
+                                       data-bs-toggle="tooltip" title="The amount added each time">
+                            </div>
+                            <small class="form-text text-muted">Percentage to sell each time you modify your position.</small>
+                        </div>
+
+                        <div class="range-group mb-3">
+                            <label class="form-label">Drawdown Percentage Range</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" asp-for="Input.DrawdownStart" placeholder="Start" step="0.1" required
+                                       data-bs-toggle="tooltip" title="Start value">
+                                <input type="number" class="form-control" asp-for="Input.DrawdownEnd" placeholder="End" step="0.1" required
+                                       data-bs-toggle="tooltip" title="End value">
+                                <input type="number" class="form-control" asp-for="Input.DrawdownStep" placeholder="Step" step="0.1" required
+                                       data-bs-toggle="tooltip" title="The amount added each time">
+                            </div>
+                            <small class="form-text text-muted">The drawdown at which to modify the position. E.g., a value of 0.4 means that when a position is at a drawdown of 40%, it would trigger the modifying action.</small>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Calculate Optimal Settings</button>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Results</h5>
+                    </div>
+                    <div class="card-body">
+                        @if (!string.IsNullOrEmpty(Model.Results))
+                        {
+                            <div id="results-container">
+                                @foreach (var result in Model.Results.Split("===============================", StringSplitOptions.RemoveEmptyEntries))
+                                {
+                                    if (!string.IsNullOrWhiteSpace(result))
+                                    {
+                                        var lines = result.Trim().Split('\n', StringSplitOptions.RemoveEmptyEntries);
+                                        var initialBuy = lines.FirstOrDefault(l => l.Contains("Initial buy percentage"))?.Split(':')[1].Trim().TrimEnd('%');
+                                        var leverage = lines.FirstOrDefault(l => l.Contains("Leverage"))?.Split(':')[1].Trim();
+                                        var drawdown = lines.FirstOrDefault(l => l.Contains("Drawdown"))?.Split(':')[1].Trim().TrimEnd('%');
+                                        var buyPercentage = lines.FirstOrDefault(l => l.Contains("Buy percentage"))?.Split(':')[1].Trim().TrimEnd('%');
+                                        var sellPercentage = lines.FirstOrDefault(l => l.Contains("Sell percentage"))?.Split(':')[1].Trim().TrimEnd('%');
+
+                                        <div class="result-item p-3 mb-3 border rounded hover-bg-light cursor-pointer"
+                                             style="cursor: pointer;"
+                                             onclick="getScenarioDetails(this)"
+                                             data-initial-buy="@(initialBuy != null ? (double.Parse(initialBuy) / 100).ToString("F2") : "0")"
+                                             data-leverage="@leverage"
+                                             data-drawdown="@(drawdown != null ? (double.Parse(drawdown) / 100).ToString("F2") : "0")"
+                                             data-buy-percentage="@(buyPercentage != null ? (double.Parse(buyPercentage) / 100).ToString("F2") : "0")"
+                                             data-sell-percentage="@(sellPercentage != null ? (double.Parse(sellPercentage) / 100).ToString("F2") : "0")">
+                                            <pre class="mb-0">@result.Trim()</pre>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted">No results to display. Click Calculate to see results.</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Modal for displaying scenario details -->
+<div class="modal fade" id="scenarioModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Scenario Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="scenarioDetails">Loading...</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Enable tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+
+        // Form validation
+        (function () {
+            'use strict'
+            var forms = document.querySelectorAll('.needs-validation')
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })();
+
+        // Scenario details handling
+        async function getScenarioDetails(element) {
+            const parameters = {
+                initialBuyPercentage: element.dataset.initialBuy,
+                leverage: element.dataset.leverage,
+                drawdown: element.dataset.drawdown,
+                buyPercentage: element.dataset.buyPercentage,
+                sellPercentage: element.dataset.sellPercentage
+            };
+
+            try {
+                const response = await fetch(`?handler=RunConfiguration&${new URLSearchParams(parameters)}`);
+                if (!response.ok) throw new Error('Network response was not ok');
+                const data = await response.json();
+                displaySimulationLogs(data.logs);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to load scenario details');
+            }
+        }
+
+        function displaySimulationLogs(logs) {
+            const modalBody = document.getElementById('scenarioDetails');
+            modalBody.innerHTML = `<pre style="white-space: pre-wrap;">${logs}</pre>`;
+            const modal = new bootstrap.Modal(document.getElementById('scenarioModal'));
+            modal.show();
+        }
+    </script>
+}

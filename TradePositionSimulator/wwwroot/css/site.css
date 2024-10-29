@@ -1,0 +1,148 @@
+<style >
+body {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+}
+
+.container {
+    max-width: 1400px;
+}
+
+.card {
+    background-color: #2d2d2d;
+    border: 1px solid #404040;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+}
+
+.card-header {
+    background-color: #353535;
+    border-bottom: 1px solid #404040;
+    padding: 1rem;
+    border-radius: 10px 10px 0 0;
+}
+
+.form-control {
+    background-color: #353535;
+    border: 1px solid #404040;
+    color: #e0e0e0;
+    border-radius: 6px;
+}
+
+    .form-control:focus {
+        background-color: #404040;
+        border-color: #00ff9d;
+        color: #ffffff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 255, 157, 0.25);
+    }
+
+.btn-primary {
+    background-color: #00ff9d;
+    border: none;
+    color: #1a1a1a;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+    .btn-primary:hover {
+        background-color: #00cc7d;
+        transform: translateY(-1px);
+    }
+
+.result-item {
+    background-color: #353535;
+    transition: all 0.3s ease;
+}
+
+    .result-item:hover {
+        background-color: #404040;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+pre {
+    color: #e0e0e0;
+}
+
+.text-success {
+    color: #00ff9d !important;
+}
+
+.text-danger {
+    color: #ff4d4d !important;
+}
+
+.form-label {
+    color: #00ff9d;
+    font-weight: 500;
+}
+
+.modal-content {
+    background-color: #2d2d2d;
+    border: 1px solid #404040;
+}
+
+.modal-header {
+    border-bottom: 1px solid #404040;
+    background-color: #353535;
+}
+
+    .modal-header .btn-close {
+        filter: invert(1) grayscale(100%) brightness(200%);
+    }
+
+.result-item pre {
+    font-family: 'Consolas', monospace;
+}
+
+/* Add some cool features for the numbers */
+.result-item [data-value]:before {
+    content: attr(data-value);
+    color: #00ff9d;
+}
+
+/* Make tooltips look better */
+.tooltip .tooltip-inner {
+    background-color: #00ff9d;
+    color: #1a1a1a;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #2d2d2d;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #404040;
+    border-radius: 4px;
+}
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #4d4d4d;
+    }
+
+/* Add some animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card {
+    animation: fadeIn 0.5s ease-out;
+}
+
+</style >
